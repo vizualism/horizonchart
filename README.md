@@ -1,0 +1,1 @@
+Note: this uses the d3.chart module, which is deprecated. I need to rewrite the horizon component!
