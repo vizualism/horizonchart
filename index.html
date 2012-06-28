@@ -1,31 +1,40 @@
-<!DOCTYPE html>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<style>
 
-<div id="chart"></div>
+#horizon-controls {
+  position: relative;
+  width: 100%;
+  font-size: 16px;
+  margin-bottom: 6px;
+}
 
-<div id="controls">
-  <input name="mode" type="radio" value="offset" id="mode-offset" checked><label for="mode-offset"> Offset</label>
-  <input name="mode" type="radio" value="mirror" id="mode-mirror"><label for="mode-mirror"> Mirror</label>
-  <span id="bands"><button class="first">&#x2212;</button><button class="last">+</button></span>
+#horizon-bands {
+  position: absolute;
+  right: 0;
+}
+
+</style>
+<div id="horizon-controls">
+  <input name="mode" type="radio" value="mirror" id="horizon-mode-mirror" checked><label for="horizon-mode-mirror"> Mirror</label>
+  <input name="mode" type="radio" value="offset" id="horizon-mode-offset"><label for="horizon-mode-offset"> Offset</label>
+  <span id="horizon-bands"><span id="horizon-bands-value">1</span> <button class="first">&#x2212;</button><button class="last">+</button></span>
 </div>
+<div id="horizon-chart"></div>
+<script src="horizon.js?0.0.1"></script>
+<script>
 
-<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?2.7.0"></script>
-<script type="text/javascript" src="http://mbostock.github.com/d3/d3.chart.js?2.7.0"></script>
-<script type="text/javascript">
+var width = 960,
+    height = 360;
 
-var w = 960,
-    h = 80;
-
-var chart = d3.chart.horizon()
-    .width(w)
-    .height(h)
-    .bands(5)
-    .mode("offset")
+var chart = d3.horizon()
+    .width(width)
+    .height(height)
+    .bands(1)
+    .mode("mirror")
     .interpolate("basis");
 
-var svg = d3.select("#chart").append("svg")
-    .attr("width", w)
-    .attr("height", h);
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
 d3.json("unemployment.json", function(data) {
 
@@ -41,27 +50,16 @@ d3.json("unemployment.json", function(data) {
   svg.data([data]).call(chart);
 
   // Enable mode buttons.
-  d3.selectAll("input[name=mode]").on("change", function() {
+  d3.selectAll("#horizon-controls input[name=mode]").on("change", function() {
     svg.call(chart.duration(0).mode(this.value));
   });
 
   // Enable bands buttons.
-  d3.selectAll("#bands button").data([-1, 1]).on("click", function(d) {
-    svg.call(chart.duration(1000).bands(Math.max(1, chart.bands() + d)));
+  d3.selectAll("#horizon-bands button").data([-1, 1]).on("click", function(d) {
+    var n = Math.max(1, chart.bands() + d);
+    d3.select("#horizon-bands-value").text(n);
+    svg.call(chart.duration(1000).bands(n).height(height / n));
   });
 });
 
 </script>
-<style type="text/css">
-
-#controls {
-  position: relative;
-  width: 960px;
-}
-
-#bands {
-  position: absolute;
-  right: 0;
-}
-
-</style>

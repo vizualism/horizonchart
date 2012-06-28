@@ -1,1 +1,1 @@
-Note: this uses the d3.chart module, which is deprecated. I need to rewrite the horizon component!
+An example of the [d3.horizon](https://github.com/d3/d3-plugins/tree/master/horizon) plugin.
