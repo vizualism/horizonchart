@@ -1,10 +1,20 @@
 <style>
 
+body {
+  font: 10px sans-serif;
+}
+
+svg {
+  position: absolute;
+  top: 0;
+}
+
 #horizon-controls {
-  position: relative;
-  width: 100%;
+  position: absolute;
+  width: 960px;
   font-size: 16px;
   margin-bottom: 6px;
+  z-index: 1;
 }
 
 #horizon-bands {
@@ -19,12 +29,12 @@
   <span id="horizon-bands"><span id="horizon-bands-value">1</span> <button class="first">&#x2212;</button><button class="last">+</button></span>
 </div>
 <div id="horizon-chart"></div>
-<script src="http://d3js.org/d3.v2.min.js?2.9.5"></script>
+<script src="http://d3js.org/d3.v2.js?2.9.5"></script>
 <script src="horizon.js?0.0.1"></script>
 <script>
 
 var width = 960,
-    height = 360;
+    height = 500;
 
 var chart = d3.horizon()
     .width(width)
